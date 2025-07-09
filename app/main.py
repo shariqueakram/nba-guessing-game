@@ -1,14 +1,15 @@
 from fastapi import FastAPI
-from app.nba import get_random_player_and_stats
+from app.nba import get_random_filtered_player_stats
+from nba_api.stats.static import players
 
 app = FastAPI()
 
-@app.get("/player") # Adding decorator for the endpoints of FastAPI
+@app.get("/player")
 def get_player_stats():
-    data = get_random_player_and_stats()
-    if not data:
-        return {"error": "No stats available, try again"}
-    
+    data = get_random_filtered_player_stats()
+    if not data or 'error' in data:
+        return data or {"error": "No stats available"}
+
     return {
         "id": data['id'],
         "stats": data['stats']
@@ -16,7 +17,6 @@ def get_player_stats():
 
 @app.get("/reveal/{player_id}")
 def reveal_player_name(player_id: int):
-    from nba_api.stats.static import players
     player_list = players.get_active_players()
     for p in player_list:
         if p['id'] == player_id:
