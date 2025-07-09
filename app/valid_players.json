@@ -1,0 +1,13 @@
+[
+    { "name": "LeBron James", "id": 2544, "games": 1431 },
+    { "name": "Stephen Curry", "id": 201939, "games": 882 },
+    { "name": "Kevin Durant", "id": 201142, "games": 1058 },
+    { "name": "James Harden", "id": 201935, "games": 1000 },
+    { "name": "Jayson Tatum", "id": 1628369, "games": 473 },
+    { "name": "Joel Embiid", "id": 203954, "games": 418 },
+    { "name": "Giannis Antetokounmpo", "id": 203507, "games": 719 },
+    { "name": "Anthony Davis", "id": 203076, "games": 735 },
+    { "name": "Kyrie Irving", "id": 202681, "games": 671 },
+    { "name": "Damian Lillard", "id": 203081, "games": 769 }
+  ]
+  
