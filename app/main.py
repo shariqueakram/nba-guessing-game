@@ -1,23 +1,32 @@
-# In your main.py or routes file
-from fastapi import FastAPI
-from app.nba import get_random_filtered_player_stats, get_player_by_name, search_players_by_name
+# ... (previous imports remain the same)
 
-app = FastAPI()
+# Load valid players with enhanced data
+try:
+    with open("valid_players.json", "r") as f:
+        VALID_PLAYERS = json.load(f)
+except FileNotFoundError:
+    VALID_PLAYERS = []
 
-@app.get("/random-player")
-async def get_random_player():
-    player = get_random_filtered_player_stats(min_games=100, min_points=1000)
-    if player:
-        return player
-    return {"error": "No suitable player found"}
+# ... (previous middleware and models remain the same)
 
-@app.get("/player/{player_name}")
-async def get_player(player_name: str):
-    player = get_player_by_name(player_name)
-    if player:
-        return player
-    return {"error": "Player not found"}
+@app.get("/game/new")
+async def new_game():
+    """Start a new game with enhanced player data"""
+    try:
+        if not VALID_PLAYERS:
+            raise HTTPException(status_code=500, detail="No valid players found")
+        
+        random_player = random.choice(VALID_PLAYERS)
+        
+        # Return stats without the name for guessing
+        return {
+            "player_id": random_player["id"],
+            "stats": random_player["stats"],
+            "teams": random_player.get("teams", []),
+            "hint": f"This player has played {random_player['stats']['games']} games for {len(random_player.get('teams', []))} teams"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error starting new game: {str(e)}")
 
-@app.get("/search/{search_term}")
-async def search_players(search_term: str):
-    return search_players_by_name(search_term)
+# ... (other endpoints remain similar but will use the enhanced data)
